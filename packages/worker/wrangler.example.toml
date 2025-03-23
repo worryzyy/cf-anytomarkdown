@@ -1,0 +1,24 @@
+name = "anytomarkdown"
+main = "src/index.ts"
+compatibility_date = "2023-10-30"
+usage_model = "bundled"
+
+# 替换为你的Cloudflare账户ID
+account_id = "your-account-id-here"
+
+# AI绑定
+[ai]
+binding = "AI"
+
+# 环境变量
+[vars]
+# 允许的CORS来源，用逗号分隔，如: "https://example.com,https://app.example.com"
+ALLOWED_ORIGINS = ""
+
+# 这是生产环境配置
+[env.production]
+# 如果需要不同的生产环境配置，可以在这里添加
+
+# 这是开发环境配置
+[env.development]
+# 开发环境中可能有不同的配置 
