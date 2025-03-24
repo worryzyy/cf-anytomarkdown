@@ -4,6 +4,8 @@ _English | [简体中文](./README.zh-CN.md)_
 
 AnyToMarkdown is a powerful online tool that quickly and accurately converts various document formats (including Word documents, PDF files, HTML pages, etc.) to Markdown format. The service is built on Cloudflare Workers, providing high-performance, low-latency file conversion experience.
 
+**Live Demo**: [https://cf-anytomarkdown.vercel.app/](https://cf-anytomarkdown.vercel.app/)
+
 ## Key Features
 
 - **Multi-format Support**: Convert PDF, HTML, TXT and other formats to Markdown (DOCX format is not supported)
@@ -59,6 +61,22 @@ cp packages/worker/wrangler.example.toml packages/worker/wrangler.toml
 account_id = "your_account_id_here"  # Replace with your actual account ID
 ```
 
+3. Create a `.dev.vars` file in the `packages/worker` directory for local development environment variables:
+
+```bash
+# Example .dev.vars file
+API_KEY=your_api_key_here
+ENVIRONMENT=development
+
+# Additional examples:
+# CORS_ALLOWED_ORIGINS=http://localhost:5173,https://your-production-domain.com
+# MAX_FILE_SIZE=10485760  # 10MB in bytes
+# ENABLE_DEBUG=true
+# CUSTOM_HEADERS={"X-Custom-Header": "value"}
+```
+
+The `.dev.vars` file is used to store environment variables for local development.
+
 You can find your account ID in the [Cloudflare Dashboard](https://dash.cloudflare.com/?to=/:account/workers).
 
 #### Frontend Configuration
@@ -108,6 +126,32 @@ After configuring your `wrangler.toml` file, run:
 ```bash
 npm run deploy:worker
 ```
+
+#### Deploy Frontend to Vercel
+
+To deploy the frontend to Vercel, follow these steps:
+
+1. **Install Vercel CLI** (optional):
+
+   ```bash
+   npm install -g vercel
+   ```
+
+2. **Login to Vercel**:
+
+   ```bash
+   vercel login
+   ```
+
+3. **Deploy the Frontend**:
+   Navigate to the `packages/web` directory and run:
+
+   ```bash
+   vercel
+   ```
+
+4. **Configure Environment Variables**:
+   - Set the `API_BASE_URL` to your deployed Worker URL in the Vercel project settings.
 
 #### Complete Deployment
 

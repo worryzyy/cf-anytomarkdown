@@ -79,7 +79,7 @@ function App() {
           <h2 className="text-xl font-semibold mb-4">上传文件转换</h2>
           <FileUpload
             onStartLoading={() => setLoading(true)}
-            onEndLoading={() => setLoading(false)}
+            onEndLoading={() => setLoading(loading)}
             onSuccess={handleConversionResults}
             onError={handleConversionError}
           />

@@ -4,6 +4,8 @@ _[English](./README.md) | 简体中文_
 
 AnyToMarkdown 是一个功能强大的在线工具，可将各种文档格式（包括 Word 文档、PDF 文件、HTML 网页等）快速、准确地转换为 Markdown 格式。该服务基于 Cloudflare Workers 构建，提供高性能、低延迟的文件转换体验。
 
+**在线演示**： [https://cf-anytomarkdown.vercel.app/](https://cf-anytomarkdown.vercel.app/)
+
 ## 主要功能
 
 - **多格式支持**：支持将 PDF、HTML、TXT 等多种格式转换为 Markdown（不支持 DOCX 格式）
@@ -59,6 +61,22 @@ cp packages/worker/wrangler.example.toml packages/worker/wrangler.toml
 account_id = "your_account_id_here"  # 替换为您的账户ID
 ```
 
+3. 在 `packages/worker` 目录中创建 `.dev.vars` 文件，用于本地开发环境变量：
+
+```bash
+# .dev.vars 文件示例
+API_KEY=your_api_key_here
+ENVIRONMENT=development
+
+# 其他示例：
+# CORS_ALLOWED_ORIGINS=http://localhost:5173,https://your-production-domain.com
+# MAX_FILE_SIZE=10485760  # 10MB in bytes
+# ENABLE_DEBUG=true
+# CUSTOM_HEADERS={"X-Custom-Header": "value"}
+```
+
+`.dev.vars` 文件用于存储本地开发环境的环境变量。
+
 您可以在 [Cloudflare Dashboard](https://dash.cloudflare.com/?to=/:account/workers) 找到您的账户 ID。
 
 #### 配置前端应用
@@ -108,6 +126,32 @@ npm run build
 ```bash
 npm run deploy:worker
 ```
+
+#### 部署前端到 Vercel
+
+要将前端部署到 Vercel，请按照以下步骤操作：
+
+1. **安装 Vercel CLI**（可选）：
+
+   ```bash
+   npm install -g vercel
+   ```
+
+2. **登录 Vercel**：
+
+   ```bash
+   vercel login
+   ```
+
+3. **部署前端**：
+   进入 `packages/web` 目录并运行：
+
+   ```bash
+   vercel
+   ```
+
+4. **配置环境变量**：
+   - 在 Vercel 项目设置中将 `API_BASE_URL` 设置为您的已部署 Worker URL。
 
 #### 完整部署
 

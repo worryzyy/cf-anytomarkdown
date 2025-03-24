@@ -1,25 +1,29 @@
-name = "anytomarkdown"
-main = "src/index.ts"
-compatibility_date = "2023-10-30"
-usage_model = "bundled"
+# Cloudflare Workers 配置文件示例
+# 复制此文件为 wrangler.toml 并修改相关配置
 
-# 你需要在这里添加自己的Cloudflare账户ID
-# 你可以在Cloudflare控制面板找到它：https://dash.cloudflare.com/?to=/:account/workers
+# 你的 Cloudflare 账户 ID
 account_id = "your_account_id_here"
 
-# 兼容性设置
-compatibility_flags = ["nodejs_compat"]
+# Worker 名称
+name = "anytomarkdown"
 
-# 内存和CPU限制
-[limits]
-memory_mb = 128
-cpu_ms = 50
+# 主程序入口
+main = "src/index.ts"
 
-# AI绑定 - Cloudflare Workers AI服务
-[ai]
+# 开发环境配置
+[dev]
+port = 8787
+local_protocol = "http"
+
+# 构建配置
+[build]
+command = "npm run build"
+
+# AI 绑定 - Cloudflare Workers AI服务
+[[ai]]
 binding = "AI"
 
-# 环境变量
+# 环境变量配置
 [vars]
 # 允许的CORS来源，用逗号分隔
 # 例如: "https://example.com,https://app.example.com"
@@ -28,11 +32,8 @@ ALLOWED_ORIGINS = "*"
 
 # 生产环境配置
 [env.production]
-# 这里可以添加生产环境特定的配置
-# 例如可以限制特定的CORS来源
-# vars.ALLOWED_ORIGINS = "https://yourdomain.com"
+vars = { ENVIRONMENT = "production" }
 
 # 开发环境配置
 [env.development]
-# 本地开发可以使用更宽松的配置
-# vars.ALLOWED_ORIGINS = "*" 
+vars = { ENVIRONMENT = "development" }
