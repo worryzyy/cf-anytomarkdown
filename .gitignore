@@ -38,4 +38,27 @@ lerna-debug.log*
 *.ntvs*
 *.njsproj
 *.sln
-*.sw? 
+*.sw?
+
+# Cloudflare
+.wrangler/
+.dev.vars
+
+# 配置文件 
+packages/worker/wrangler.toml
+packages/web/.env.local
+packages/web/.env.development.local
+packages/web/.env.production.local
+
+# 构建输出
+packages/web/dist/
+packages/worker/dist/
+
+# 其他
+.turbo
+.cache
+.env
+
+# 构建输出
+dist-ssr
+*.local 

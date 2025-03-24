@@ -1,30 +1,106 @@
-import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { useState, useEffect, useRef } from 'react';
+import MarkdownIt from 'markdown-it';
+import highlightjs from 'markdown-it-highlightjs';
+import 'highlight.js/styles/github.css';
+import hljs from 'highlight.js';
 import { ConversionResult } from '../types';
 
 interface MarkdownOutputProps {
   results: ConversionResult[];
 }
 
-// 定义正确的组件类型
-interface CodeProps {
-  node?: any;
-  inline?: boolean;
-  className?: string;
-  children: React.ReactNode;
-}
+// 预处理 Markdown 文本，修复标题和换行符问题
+const preprocessMarkdown = (markdown: string): string => {
+  if (!markdown) return '';
+  
+
+  
+  // 修复标题格式
+  let processed = markdown
+  
+    
+  return processed;
+};
 
 const MarkdownOutput = ({ results }: MarkdownOutputProps) => {
   const [activeTab, setActiveTab] = useState(0);
   const [viewMode, setViewMode] = useState<'preview' | 'source'>('preview');
+  const markdownRef = useRef<HTMLDivElement>(null);
+  
+  // 创建并配置 markdown-it 实例
+  const md = new MarkdownIt({
+    html: true,             // 启用 HTML 标签
+    linkify: true,          // 自动将 URL 转换为链接
+    typographer: true,      // 启用一些语言中立的替换和引号美化
+    breaks: true,           // 启用换行符转换为 <br>
+    highlight: function(str, lang) {
+      // 默认的代码高亮处理
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(str, { language: lang }).value;
+        } catch (__) {}
+      }
+      return ''; // 使用外部默认转义
+    }
+  }).use(highlightjs); // 使用 highlight.js 插件
+
+  // 增强表格渲染，添加样式
+  md.renderer.rules.table_open = () => {
+    return '<table class="min-w-full divide-y divide-gray-300 dark:divide-gray-700 border border-gray-300 dark:border-gray-700">\n';
+  };
+
+  md.renderer.rules.thead_open = () => {
+    return '<thead class="bg-gray-50 dark:bg-gray-800">\n';
+  };
+
+  md.renderer.rules.tbody_open = () => {
+    return '<tbody class="divide-y divide-gray-200 dark:divide-gray-700">\n';
+  };
+
+  md.renderer.rules.tr_open = () => {
+    return '<tr class="hover:bg-gray-50 dark:hover:bg-gray-700">\n';
+  };
+
+  md.renderer.rules.th_open = () => {
+    return '<th class="px-3 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">';
+  };
+
+  md.renderer.rules.td_open = () => {
+    return '<td class="px-3 py-2 text-sm text-gray-900 dark:text-gray-100">';
+  };
+
+  // 渲染 Markdown 内容
+  useEffect(() => {
+    if (viewMode === 'preview' && markdownRef.current && results[activeTab]?.data) {
+      try {
+        // 预处理 Markdown 内容，修复格式问题
+        const processedMarkdown = preprocessMarkdown(results[activeTab].data);
+        
+        // 渲染 Markdown 为 HTML
+        const renderedHTML = md.render(processedMarkdown);
+        
+        // 更新 DOM
+        markdownRef.current.innerHTML = renderedHTML;
+        
+        // 处理所有链接，使其在新标签页中打开
+        const links = markdownRef.current.querySelectorAll('a');
+        links.forEach(link => {
+          link.setAttribute('target', '_blank');
+          link.setAttribute('rel', 'noopener noreferrer');
+        });
+      } catch (error) {
+        console.error('Markdown 渲染错误:', error);
+        markdownRef.current.innerHTML = '<div class="text-red-500">Markdown 渲染失败</div>';
+      }
+    }
+  }, [activeTab, viewMode, results, md]);
 
   // 选择活动标签
   const handleTabClick = (index: number) => {
     setActiveTab(index);
   };
 
-  // 复制Markdown内容
+  // 复制 Markdown 内容
   const handleCopyClick = () => {
     if (results[activeTab]) {
       navigator.clipboard.writeText(results[activeTab].data)
@@ -37,7 +113,7 @@ const MarkdownOutput = ({ results }: MarkdownOutputProps) => {
     }
   };
 
-  // 下载Markdown文件
+  // 下载 Markdown 文件
   const handleDownloadClick = () => {
     if (results[activeTab]) {
       const blob = new Blob([results[activeTab].data], { type: 'text/markdown' });
@@ -127,16 +203,13 @@ const MarkdownOutput = ({ results }: MarkdownOutputProps) => {
       <div className="markdown-output overflow-auto max-h-96">
         {viewMode === 'preview' ? (
           <div
+            ref={markdownRef}
             className="prose prose-indigo max-w-none dark:prose-invert p-4"
             style={{
               /* 使用CSS让段落内容保持换行 */
               whiteSpace: 'pre-wrap'
             }}
-          >
-            <ReactMarkdown>
-              {results[activeTab]?.data || ''}
-            </ReactMarkdown>
-          </div>
+          ></div>
         ) : (
           <pre className="whitespace-pre-wrap font-mono text-sm p-4 bg-gray-50 dark:bg-gray-900 rounded">
             {results[activeTab]?.data || ''}

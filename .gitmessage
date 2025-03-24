@@ -1,0 +1,12 @@
+# type(scope): subject
+# - feat: new feature
+# - fix: bug fix
+# - docs: documentation changes
+# - style: formatting, missing semicolons, etc
+# - refactor: refactoring code
+# - test: adding tests
+# - chore: updating build tasks, package manager configs
+
+# [optional body]
+
+# [optional footer]

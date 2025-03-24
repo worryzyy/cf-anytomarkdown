@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import FileUpload from './components/FileUpload';
-import UrlInput from './components/UrlInput';
 import MarkdownOutput from './components/MarkdownOutput';
 import Notification from './components/Notification';
 import { ConversionResult, Notification as NotificationType } from './types';
@@ -16,14 +15,18 @@ function App() {
   // 服务状态
   const [serviceAvailable, setServiceAvailable] = useState(true);
 
+
+
   // 检查服务是否可用
   useEffect(() => {
     const checkService = async () => {
-      const available = await checkServiceStatus();
-      setServiceAvailable(available);
-
-      if (!available) {
-        addNotification('error', '服务不可用，请稍后再试');
+      try {
+        const status = await checkServiceStatus();
+        console.log('服务状态:', status);
+        setServiceAvailable(true);
+      } catch (error) {
+        console.error('服务不可用:', error);
+        setServiceAvailable(false);
       }
     };
 
@@ -52,6 +55,8 @@ function App() {
     addNotification('error', error);
   };
 
+ 
+
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <header className="max-w-4xl mx-auto mb-8">
@@ -73,17 +78,6 @@ function App() {
         <section className="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">上传文件转换</h2>
           <FileUpload
-            onStartLoading={() => setLoading(true)}
-            onEndLoading={() => setLoading(false)}
-            onSuccess={handleConversionResults}
-            onError={handleConversionError}
-          />
-        </section>
-
-        {/* URL输入区域 */}
-        <section className="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">通过URL转换</h2>
-          <UrlInput
             onStartLoading={() => setLoading(true)}
             onEndLoading={() => setLoading(false)}
             onSuccess={handleConversionResults}

@@ -1,7 +1,6 @@
 import {
 	handleConvertRequest,
 	handleBatchConvertRequest,
-	handleUrlConvertRequest,
 	handleStatusRequest
 } from './handlers'
 import { Env } from './types'
@@ -71,9 +70,6 @@ export default {
 			} else if (path === '/convert/batch' || path === '/api/convert/batch') {
 				// 批量转换
 				response = await handleBatchConvertRequest(request, env)
-			} else if (path === '/convert/url' || path === '/api/convert-url') {
-				// URL转换
-				response = await handleUrlConvertRequest(request, env)
 			} else if (path === '/status' || path === '/api/status') {
 				// 状态检查
 				response = handleStatusRequest()

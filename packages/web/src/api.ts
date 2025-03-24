@@ -59,46 +59,6 @@ export const convertToMarkdown = async (
 }
 
 /**
- * 通过URL转换文档
- */
-export const convertUrlToMarkdown = async (
-	url: string
-): Promise<ApiResponse> => {
-	try {
-		// 发送请求
-		const response = await fetch(`${API_BASE_URL}/convert/url`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ url })
-		})
-
-		// 检查HTTP状态
-		if (!response.ok) {
-			const errorText = await response.text()
-			throw new Error(`API错误 (${response.status}): ${errorText}`)
-		}
-
-		// 解析响应
-		const data = (await response.json()) as ApiResponse
-
-		// 检查API响应状态
-		if (!data.success) {
-			throw new Error(data.error || '转换失败')
-		}
-
-		return data
-	} catch (error) {
-		console.error('URL转换过程中出错:', error)
-		return {
-			success: false,
-			error: handleApiError(error)
-		}
-	}
-}
-
-/**
  * 检查服务状态
  */
 export async function checkServiceStatus(): Promise<{
@@ -194,38 +154,6 @@ export async function convertMultipleFiles(
 		return data.results
 	} catch (error) {
 		console.error('批量文件转换请求失败:', error)
-		throw error
-	}
-}
-
-/**
- * 通过URL转换内容
- * @param url 要转换的URL
- */
-export async function convertUrl(url: string): Promise<ConversionResult> {
-	try {
-		const response = await fetch(`${API_BASE_URL}/api/convert-url`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ url })
-		})
-
-		if (!response.ok) {
-			const errorData = await response.json()
-			throw new Error(errorData.error || `服务器错误: ${response.status}`)
-		}
-
-		const data = await response.json()
-
-		if (!data.success || !data.results || data.results.length === 0) {
-			throw new Error('URL转换失败，服务器没有返回有效结果')
-		}
-
-		return data.results[0]
-	} catch (error) {
-		console.error('URL转换请求失败:', error)
 		throw error
 	}
 }

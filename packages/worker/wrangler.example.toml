@@ -3,22 +3,36 @@ main = "src/index.ts"
 compatibility_date = "2023-10-30"
 usage_model = "bundled"
 
-# 替换为你的Cloudflare账户ID
-account_id = "your-account-id-here"
+# 你需要在这里添加自己的Cloudflare账户ID
+# 你可以在Cloudflare控制面板找到它：https://dash.cloudflare.com/?to=/:account/workers
+account_id = "your_account_id_here"
 
-# AI绑定
+# 兼容性设置
+compatibility_flags = ["nodejs_compat"]
+
+# 内存和CPU限制
+[limits]
+memory_mb = 128
+cpu_ms = 50
+
+# AI绑定 - Cloudflare Workers AI服务
 [ai]
 binding = "AI"
 
 # 环境变量
 [vars]
-# 允许的CORS来源，用逗号分隔，如: "https://example.com,https://app.example.com"
-ALLOWED_ORIGINS = ""
+# 允许的CORS来源，用逗号分隔
+# 例如: "https://example.com,https://app.example.com"
+# 使用"*"允许所有来源（不推荐用于生产环境）
+ALLOWED_ORIGINS = "*"
 
-# 这是生产环境配置
+# 生产环境配置
 [env.production]
-# 如果需要不同的生产环境配置，可以在这里添加
+# 这里可以添加生产环境特定的配置
+# 例如可以限制特定的CORS来源
+# vars.ALLOWED_ORIGINS = "https://yourdomain.com"
 
-# 这是开发环境配置
+# 开发环境配置
 [env.development]
-# 开发环境中可能有不同的配置 
+# 本地开发可以使用更宽松的配置
+# vars.ALLOWED_ORIGINS = "*" 
