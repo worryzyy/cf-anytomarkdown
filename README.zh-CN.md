@@ -311,7 +311,7 @@ GET /api/status
 
 ### Beta 阶段说明
 
-请注意，Markdown 转换功能目前处于 beta 阶段。因此，转换效果可能不够理想。我们鼓励您关注后续的更新和改进。
+请注意，Markdown 转换功能目前是 Cloudflare 官方的 beta 阶段功能。因此，转换效果可能不够理想。我们鼓励您关注 Cloudflare 官方后续的更新和改进。
 
 ## 常见问题
 

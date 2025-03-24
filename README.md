@@ -311,7 +311,7 @@ The converted Markdown is rendered in the browser using:
 
 ### Beta Stage Notice
 
-Please note that the Markdown conversion feature is currently in beta. As a result, the conversion results may not be ideal. We encourage you to stay tuned for future updates and improvements.
+Please note that the Markdown conversion feature is currently in beta stage by Cloudflare. As a result, the conversion results may not be ideal. We encourage you to stay tuned for future updates and improvements from Cloudflare's official releases.
 
 ## Troubleshooting
 
