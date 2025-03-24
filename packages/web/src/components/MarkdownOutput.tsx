@@ -13,11 +13,14 @@ interface MarkdownOutputProps {
 const preprocessMarkdown = (markdown: string): string => {
   if (!markdown) return '';
   
-
-  
-  // 修复标题格式
+  // 修复标题格式 - 确保#号后有空格
   let processed = markdown
-  
+    .replace(/^(#{1,6})([^#\s])/gm, '$1 $2')
+    
+  // 修复换行符 - 确保单行换行被正确转换
+  // 添加两个空格加换行符来确保换行
+  processed = processed
+    .replace(/([^\n])\n([^\n])/g, '$1  \n$2')
     
   return processed;
 };

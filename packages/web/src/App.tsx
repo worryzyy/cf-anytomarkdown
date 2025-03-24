@@ -108,7 +108,7 @@ function App() {
       <footer className="max-w-4xl mx-auto mt-12 text-center text-sm text-gray-500 dark:text-gray-400">
         <p>AnyToMarkdown - 基于 Cloudflare Workers AI</p>
         <p className="mt-1">
-          <a href="https://github.com/your-username/anytomarkdown" className="text-indigo-600 dark:text-indigo-400 hover:underline">GitHub</a>
+          <a href="https://github.com/worryzyy/cf-anytomarkdown.git" className="text-indigo-600 dark:text-indigo-400 hover:underline">GitHub</a>
           {" | "}
           <a href="https://developers.cloudflare.com/workers-ai/markdown-conversion/" className="text-indigo-600 dark:text-indigo-400 hover:underline">了解更多</a>
         </p>

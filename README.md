@@ -6,7 +6,7 @@ AnyToMarkdown is a powerful online tool that quickly and accurately converts var
 
 ## Key Features
 
-- **Multi-format Support**: Convert DOCX, PDF, HTML, TXT and other formats to Markdown
+- **Multi-format Support**: Convert PDF, HTML, TXT and other formats to Markdown (DOCX format is not supported)
 - **File Upload**: Support drag-and-drop or file selection for conversion
 - **Format Preservation**: Maintains original document formatting including headings, lists, tables, images, etc.
 - **Real-time Preview**: Instantly preview conversion results
@@ -234,6 +234,40 @@ The backend is based on Cloudflare Workers, utilizing Cloudflare AI's document c
 - Image processing and embedding
 - Table and list format preservation
 - Link and reference handling
+
+## Markdown Conversion Implementation
+
+Our Markdown conversion process is designed to preserve the original document's structure while providing clean, well-formatted Markdown output:
+
+### Conversion Process
+
+1. **Document Upload**: Files are uploaded through the frontend interface
+2. **Backend Processing**: Cloudflare Workers receives the file and processes it using Cloudflare AI services
+3. **Format Handling**: Various input formats (PDF, HTML, TXT) are processed differently to ensure optimal conversion
+4. **Markdown Generation**: The conversion engine transforms the content to standard Markdown syntax
+5. **Post-processing**: Special handling for formatting issues, including:
+   - Header formatting (ensuring proper spacing after # symbols)
+   - Line break preservation (adding trailing spaces for proper breaks)
+   - Table formatting with enhanced styling
+   - Code block syntax highlighting
+
+### Frontend Rendering
+
+The converted Markdown is rendered in the browser using:
+
+- **markdown-it**: Core rendering engine
+- **highlight.js**: Code syntax highlighting
+- **Custom enhancements**: Table styling, link handling, and other formatting improvements
+
+### Limitations
+
+- DOCX format is not currently supported
+- Maximum file size is limited by Cloudflare Workers restrictions
+- Complex formatting in PDF files may not be perfectly preserved
+
+### Beta Stage Notice
+
+Please note that the Markdown conversion feature is currently in beta. As a result, the conversion results may not be ideal. We encourage you to stay tuned for future updates and improvements.
 
 ## Troubleshooting
 
