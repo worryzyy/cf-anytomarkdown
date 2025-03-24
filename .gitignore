@@ -1,64 +1,57 @@
-# Dependencies
+# 依赖目录
 node_modules/
-.pnp
+.pnp/
 .pnp.js
 
-# Testing
-coverage/
-
-# Production
-build/
+# 构建输出
 dist/
+build/
 out/
-.wrangler/
-.dev.vars
+.next/
 
-# Misc
-.DS_Store
+# 环境文件
 .env
 .env.local
-.env.development.local
+.env.development
 .env.test.local
-.env.production.local
+.env.production
+.dev.vars
 
-# Logs
+# 日志
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
 lerna-debug.log*
 
-# Editor
-.vscode/*
-!.vscode/extensions.json
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# 测试
+coverage/
 
-# Cloudflare
-.wrangler/
-.dev.vars
+# 操作系统文件
+.DS_Store
+Thumbs.db
 
-# 配置文件 
-packages/worker/wrangler.toml
-packages/web/.env.local
-packages/web/.env.development.local
-packages/web/.env.production.local
+# IDE和编辑器
+.idea/
+.vscode/
+*.swp
+*.swo
 
-# 构建输出
-packages/web/dist/
-packages/worker/dist/
-
-# 其他
+# Wrangler配置
+wrangler.toml
+.wrangler
+# 缓存
+.cache/
+.npm/
+.eslintcache
+.parcel-cache/
 .turbo
-.cache
-.env
 
-# 构建输出
-dist-ssr
-*.local 
+# Yarn
+.yarn-integrity
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.* 

@@ -2,17 +2,18 @@
 
 _[English](./README.md) | 简体中文_
 
-AnyToMarkdown 是一个功能强大的在线工具，可将各种文档格式（包括 Word 文档、PDF 文件、HTML 网页等）快速、准确地转换为 Markdown 格式。该服务基于 Cloudflare Workers 构建，提供高性能、低延迟的文件转换体验。
+AnyToMarkdown 是一个功能强大的在线工具，可将各种文档格式（包括 PDF 文件、图像、HTML 网页等）快速、准确地转换为 Markdown 格式。该服务基于 Cloudflare Workers AI 构建，提供高性能、低延迟的文件转换体验。
 
-**在线演示**： [https://cf-anytomarkdown.vercel.app/](https://cf-anytomarkdown.vercel.app/)
+**在线演示**： [即将推出](#)
 
 ## 主要功能
 
-- **多格式支持**：支持将 PDF、HTML、TXT 等多种格式转换为 Markdown（不支持 DOCX 格式）
+- **多格式支持**：支持将 PDF、HTML、图像等多种格式转换为 Markdown
 - **文件上传**：支持拖放或选择本地文件进行转换
 - **格式保留**：最大程度保留原文档的格式，包括标题、列表、表格、图片等
 - **实时预览**：转换完成后即时预览转换结果
 - **导出下载**：轻松下载生成的 Markdown 文件
+- **批量处理**：同时转换多个文件
 
 ## 项目结构
 
@@ -41,7 +42,7 @@ cd anytomarkdown
 ### 2. 安装依赖
 
 ```bash
-npm install
+npm run install:all
 ```
 
 ### 3. 配置环境
@@ -65,14 +66,10 @@ account_id = "your_account_id_here"  # 替换为您的账户ID
 
 ```bash
 # .dev.vars 文件示例
-API_KEY=your_api_key_here
 ENVIRONMENT=development
-
-# 其他示例：
-# CORS_ALLOWED_ORIGINS=http://localhost:5173,https://your-production-domain.com
-# MAX_FILE_SIZE=10485760  # 10MB in bytes
-# ENABLE_DEBUG=true
-# CUSTOM_HEADERS={"X-Custom-Header": "value"}
+CORS_ALLOWED_ORIGINS=http://localhost:5173
+MAX_FILE_SIZE=10485760  # 10MB in bytes
+ENABLE_DEBUG=true
 ```
 
 `.dev.vars` 文件用于存储本地开发环境的环境变量。
@@ -151,7 +148,8 @@ npm run deploy:worker
    ```
 
 4. **配置环境变量**：
-   - 在 Vercel 项目设置中将 `API_BASE_URL` 设置为您的已部署 Worker URL。
+
+   - 在 Vercel 项目设置中将 `VITE_API_BASE_URL` 设置为您的已部署 Worker URL。
 
 #### 完整部署
 
@@ -170,6 +168,13 @@ npm run deploy
 3. 上传完成后，系统会自动开始转换
 4. 转换完成后，可以在预览区域查看 Markdown 内容
 5. 点击"下载"按钮保存 Markdown 文件
+
+### 批量转换文件
+
+1. 默认启用多文件选择功能
+2. 拖放多个文件或选择多个文件
+3. 系统将同时转换所有文件
+4. 查看转换后的文件列表，点击任意文件进行预览
 
 ## API 使用说明
 
@@ -190,14 +195,14 @@ Content-Type: multipart/form-data
 
 ```json
 {
-  "success": true,
-  "result": {
-    "name": "文件名",
-    "mimeType": "text/markdown",
-    "format": "markdown",
-    "tokens": 1234,
-    "data": "# Markdown内容..."
-  }
+	"success": true,
+	"result": {
+		"name": "文件名",
+		"mimeType": "text/markdown",
+		"format": "markdown",
+		"tokens": 1234,
+		"data": "# Markdown内容..."
+	}
 }
 ```
 
@@ -216,23 +221,23 @@ Content-Type: multipart/form-data
 
 ```json
 {
-  "success": true,
-  "results": [
-    {
-      "name": "文件1名",
-      "mimeType": "text/markdown",
-      "format": "markdown",
-      "tokens": 1234,
-      "data": "# Markdown内容..."
-    },
-    {
-      "name": "文件2名",
-      "mimeType": "text/markdown",
-      "format": "markdown",
-      "tokens": 5678,
-      "data": "# 另一个Markdown内容..."
-    }
-  ]
+	"success": true,
+	"results": [
+		{
+			"name": "文件1名",
+			"mimeType": "text/markdown",
+			"format": "markdown",
+			"tokens": 1234,
+			"data": "# Markdown内容..."
+		},
+		{
+			"name": "文件2名",
+			"mimeType": "text/markdown",
+			"format": "markdown",
+			"tokens": 5678,
+			"data": "# 另一个Markdown内容..."
+		}
+	]
 }
 ```
 
@@ -248,88 +253,45 @@ GET /api/status
 
 ```json
 {
-  "success": true,
-  "status": "online",
-  "service": "anytomarkdown",
-  "version": "1.0.0"
+	"success": true,
+	"status": "online",
+	"service": "anytomarkdown",
+	"version": "1.0.0"
 }
 ```
 
 ## 技术实现说明
 
-### 前端实现
-
-前端使用 React + TypeScript + Tailwind CSS 构建，主要组件包括：
-
-- `FileUpload`: 处理文件上传及拖放功能
-- `MarkdownOutput`: 预览和下载转换结果
-- `Notification`: 显示操作提示和错误信息
-
-### 后端实现
-
-后端基于 Cloudflare Workers，使用 Cloudflare AI 的文档转换功能：
-
-- 支持单文件和批量文件处理
-- 完整的错误处理和状态检查
-
 ### 核心功能
 
-- 文档解析和格式处理
-- 图像处理和嵌入
-- 表格和列表格式保持
-- 链接和引用处理
+AnyToMarkdown 利用 Cloudflare Workers AI 的 toMarkdown 转换功能，支持多种文档格式：
 
-## Markdown 转换实现
+- **PDF 文档**：将 PDF 文件转换为 Markdown 同时保留结构
+- **图像**：使用 AI 描述图像内容并转换为有意义的 Markdown 文本
+- **HTML 文档**：将 HTML 页面转换为简洁的 Markdown
+- **XML 文档**：将 XML 数据转换为 Markdown 格式
+- **电子表格**：处理各种电子表格格式（Excel、CSV 等）
 
-我们的 Markdown 转换过程旨在保留原始文档的结构，同时提供干净、格式良好的 Markdown 输出：
+## 支持的文件格式
 
-### 转换流程
+AnyToMarkdown 支持以下文件格式：
 
-1. **文档上传**：通过前端界面上传文件
-2. **后端处理**：Cloudflare Workers 接收文件并使用 Cloudflare AI 服务进行处理
-3. **格式处理**：不同的输入格式（PDF、HTML、TXT）被不同地处理以确保最佳转换效果
-4. **Markdown 生成**：转换引擎将内容转换为标准 Markdown 语法
-5. **后处理**：对格式问题进行特殊处理，包括：
-   - 标题格式（确保#符号后有适当的空格）
-   - 换行符保留（添加尾随空格以确保正确换行）
-   - 带有增强样式的表格格式
-   - 代码块语法高亮
+- PDF 文档 (.pdf)
+- 图像 (.jpeg, .jpg, .png, .webp, .svg)
+- HTML 文档 (.html)
+- XML 文档 (.xml)
+- Microsoft Office 电子表格 (.xlsx, .xlsm, .xlsb, .xls)
+- OpenDocument 电子表格 (.ods)
+- CSV 文件 (.csv)
+- Apple Numbers 文件 (.numbers)
 
-### 前端渲染
+## 测试
 
-转换后的 Markdown 在浏览器中使用以下技术渲染：
+为方便测试，我们在 `packages/web/public` 目录中包含了示例测试文件：
 
-- **markdown-it**：核心渲染引擎
-- **highlight.js**：代码语法高亮
-- **自定义增强**：表格样式、链接处理和其他格式改进
+- example.html：包含各种元素的示例 HTML 文件
 
-### 限制
-
-- 目前不支持 DOCX 格式
-- 最大文件大小受 Cloudflare Workers 限制
-- PDF 文件中的复杂格式可能无法完美保留
-
-### Beta 阶段说明
-
-请注意，Markdown 转换功能目前是 Cloudflare 官方的 beta 阶段功能。因此，转换效果可能不够理想。我们鼓励您关注 Cloudflare 官方后续的更新和改进。
-
-## 常见问题
-
-### 1. Worker 部署失败
-
-确保您已正确设置 Cloudflare 账户 ID，并且有权限部署 Workers。您可能需要运行：
-
-```bash
-npx wrangler login
-```
-
-### 2. AI 转换服务不可用
-
-确保您的 Cloudflare 账户已启用 AI 功能。您可以在 Cloudflare Dashboard 中检查。
-
-### 3. 文件大小限制
-
-Cloudflare Workers 有请求大小限制。如果您需要转换大文件，建议将其分割或使用其他服务。
+您可以使用这些文件测试转换功能。
 
 ## 贡献指南
 
@@ -349,4 +311,108 @@ Cloudflare Workers 有请求大小限制。如果您需要转换大文件，建�
 
 - **前端**: React, TypeScript, Tailwind CSS, Vite
 - **后端**: Cloudflare Workers, TypeScript
-- **转换引擎**: Cloudflare AI
+- **转换引擎**: Cloudflare Workers AI
+
+## 限制与已知问题
+
+### 文件大小限制
+
+- **最大文件大小**：每个文件 5MB
+- **AI 处理限制**：Cloudflare Workers AI 有内部处理限制，即使文件大小在限制范围内，复杂文件也可能导致错误
+- **错误处理**：应用程序包含对超大文件和服务不可用情况的适当错误处理
+
+### Beta 阶段说明
+
+**注意**：Cloudflare Workers AI 的 Markdown 转换功能目前处于**Beta 阶段**。这意味着：
+
+- 转换质量在某些情况下可能不完美
+- 复杂的格式可能在转换过程中丢失
+- 结果可能因输入文档的复杂性而异
+- 该服务可能会随着 Cloudflare 的更新而变化和改进
+
+对于重要文档，我们建议在转换后检查并可能编辑生成的 Markdown 内容。
+
+### 支持的文件格式
+
+可以转换为 Markdown 的文件包括：
+
+- PDF 文档 (.pdf)
+- 图像 (.jpeg, .jpg, .png, .webp, .svg)
+- HTML 文档 (.html)
+- XML 文档 (.xml)
+- Microsoft Office 电子表格 (.xlsx, .xlsm, .xlsb, .xls)
+- OpenDocument 电子表格 (.ods)
+- CSV 文件 (.csv)
+- Apple Numbers 文件 (.numbers)
+
+### 常见错误
+
+#### AiError: 3006: Request is too large
+
+**说明**：请求数据大小超过了 Workers AI 服务的限制。
+
+**可能的原因**：
+
+- 上传的文件超出了允许的大小限制
+- 对于文本模型，限制通常在 1MB 左右
+- 对于图像处理模型，限制在 20MB 左右
+- 对于文档转换任务，可能有特定的大小限制
+
+**解决方案**：
+
+- 减小上传文件的大小或压缩文件
+- 对于大型文档，尝试将文件分割成多个小块分别处理
+- 对于图像，可以先压缩或降低分辨率
+- 限制应用允许的最大文件上传大小（建议限制在 5MB 以内）
+
+#### BadInput 错误
+
+**说明**：输入数据超出了模型的上下文窗口大小。
+
+**解决方案**：
+
+- 减少输入的文本长度或令牌数量
+- 压缩或简化输入内容
+
+#### 性能相关错误
+
+当使用函数调用等高级功能时，性能可能会成为问题。以下是一些提高性能的建议：
+
+- 缩短提示词（减少输入处理时间）
+- 减少提供的工具数量
+- 向最终用户流式传输响应（最小化交互时间）
+- 对于大型文件处理，考虑使用异步任务处理
+
+#### Worker 上传错误
+
+**错误代码**：10021（超出上传大小限制）
+
+**说明**：一个 Worker 在 Paid 计划上压缩后的大小最多可达 10 MB，在 Free 计划上最多可达 3 MB。
+
+**解决方案**：
+
+- 移除不必要的依赖
+- 使用 Workers KV、D1 数据库或 R2 存储配置文件、静态资产和二进制数据
+- 将功能拆分为多个 Workers，使用 Service bindings 连接
+
+**错误代码**：10021（脚本启动超过 CPU 时间限制）
+
+**说明**：在 Worker 的顶级作用域中执行的工作超过了启动时间限制（400ms）的 CPU 时间。
+
+**解决方案**：
+
+- 避免在全局作用域中执行昂贵的初始化工作
+- 在构建时或 Worker 的处理程序被调用时执行初始化工作
+- 使用 Chrome DevTools 分析 Worker 的性能问题
+
+#### AnyToMarkdown 特定的文档转换问题
+
+- **复杂文档结构丢失**：某些高级格式可能在转换为 Markdown 时丢失，这是 Markdown 格式自身的限制
+- **表格渲染问题**：复杂表格（如合并单元格）可能无法完美保留
+- **图像处理**：图像会被 AI 模型分析并转换为描述性文本，但可能无法捕捉所有视觉细节
+
+更多详细信息，请参考以下资源：
+
+- [Cloudflare Workers AI 错误文档](https://developers.cloudflare.com/workers-ai/workers-ai-errors/)
+- [Cloudflare Workers 错误和异常](https://developers.cloudflare.com/workers/observability/errors/)
+- [Workers AI 限制](https://developers.cloudflare.com/workers-ai/platform/limits/)

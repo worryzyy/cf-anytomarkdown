@@ -1,53 +1,44 @@
 /**
- * Cloudflare Worker 环境变量类型
+ * toMarkdown输入文档定义
  */
-export interface Env {
-	// AI 绑定
-	AI: any
-
-	// 允许的 CORS 来源
-	ALLOWED_ORIGINS: string
-
-	// 环境（开发/生产）
-	ENVIRONMENT?: string
-}
-
-/**
- * API 响应格式
- */
-export interface ApiResponse {
-	success: boolean
-	results?: ToMarkdownDocumentResult[]
-	error?: string
-}
-
-/**
- * 转换文档格式
- */
-export interface ToMarkdownDocument {
-	// 文档名称
+export interface toMarkdownDocument {
+	/**
+	 * 文档名称
+	 */
 	name: string
 
-	// 文档内容 Blob
+	/**
+	 * 文档内容（Blob类型）
+	 */
 	blob: Blob
 }
 
 /**
- * 转换结果格式
+ * toMarkdown转换结果定义
  */
-export interface ToMarkdownDocumentResult {
-	// 文档名称
+export interface toMarkdownDocumentResult {
+	/**
+	 * 原始文档名称
+	 */
 	name: string
 
-	// MIME 类型，通常是 text/markdown
+	/**
+	 * 文档的MIME类型
+	 */
 	mimeType: string
 
-	// 输出格式，通常是 markdown
+	/**
+	 * 输出格式，通常是'markdown'
+	 */
 	format: string
 
-	// 处理的令牌数
+	/**
+	 * 转换后的Markdown中估算的token数量
+	 */
 	tokens: number
 
-	// Markdown 内容
+	/**
+	 * Markdown格式的文档内容
+	 */
 	data: string
 }

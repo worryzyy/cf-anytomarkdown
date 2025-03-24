@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnyToMarkdown 测试文档</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #2563eb;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+
+    h2 {
+      color: #4b5563;
+      margin-top: 30px;
+    }
+
+    code {
+      background-color: #f3f4f6;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    pre {
+      background-color: #f3f4f6;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f9fafb;
+    }
+
+    blockquote {
+      border-left: 4px solid #e5e7eb;
+      padding-left: 15px;
+      color: #6b7280;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>AnyToMarkdown HTML测试文档</h1>
+
+  <p>这是一个用于测试<strong>HTML转Markdown</strong>功能的文档，包含了各种常见的HTML元素。</p>
+
+  <h2>1. 文本格式</h2>
+
+  <p>这里有一些<strong>粗体文本</strong>和<em>斜体文本</em>，以及<code>代码片段</code>。</p>
+
+  <h2>2. 列表</h2>
+
+  <h3>无序列表:</h3>
+  <ul>
+    <li>苹果</li>
+    <li>香蕉</li>
+    <li>橙子
+      <ul>
+        <li>血橙</li>
+        <li>脐橙</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>有序列表:</h3>
+  <ol>
+    <li>第一步</li>
+    <li>第二步</li>
+    <li>第三步
+      <ol>
+        <li>子步骤1</li>
+        <li>子步骤2</li>
+      </ol>
+    </li>
+  </ol>
+
+  <h2>3. 链接和图片</h2>
+
+  <p>这是一个<a href="https://github.com">GitHub</a>的链接。</p>
+
+  <h2>4. 代码块</h2>
+
+  <pre><code>function hello() {
+  console.log("Hello, world!");
+}
+
+hello();</code></pre>
+
+  <h2>5. 表格</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>类型</th>
+        <th>描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>PDF</td>
+        <td>application/pdf</td>
+        <td>Adobe PDF文档</td>
+      </tr>
+      <tr>
+        <td>JPEG</td>
+        <td>image/jpeg</td>
+        <td>JPEG图像</td>
+      </tr>
+      <tr>
+        <td>HTML</td>
+        <td>text/html</td>
+        <td>HTML文档</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>6. 引用</h2>
+
+  <blockquote>
+    <p>Markdown是一种轻量级标记语言，创始人为约翰·格鲁伯（John Gruber）。它允许人们使用易读易写的纯文本格式编写文档，然后转换成有效的HTML文档。</p>
+  </blockquote>
+
+  <h2>7. 水平线</h2>
+
+  <hr>
+
+  <p>测试文档结束。</p>
+</body>
+
+</html>

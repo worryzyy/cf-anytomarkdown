@@ -7,25 +7,33 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:worker": "npm run dev --workspace=packages/worker",
-    "dev:web": "npm run dev --workspace=packages/web",
-    "dev": "npm-run-all --parallel dev:*",
-    "build": "npm run build --workspaces",
-    "deploy:worker": "npm run deploy --workspace=packages/worker",
-    "deploy": "npm run build && npm run deploy:worker"
+    "install:all": "npm install && npm run install:worker && npm run install:web",
+    "install:worker": "cd packages/worker && npm install",
+    "install:web": "cd packages/web && npm install",
+    "dev:web": "cd packages/web && npm run dev",
+    "dev:worker": "cd packages/worker && npm run dev",
+    "dev": "npm-run-all --parallel dev:web dev:worker",
+    "build:web": "cd packages/web && npm run build",
+    "build:worker": "cd packages/worker && npm run build",
+    "build": "npm-run-all --serial build:worker build:web",
+    "deploy:worker": "cd packages/worker && npm run deploy",
+    "deploy:web": "cd packages/web && npm run deploy",
+    "deploy": "npm-run-all --serial deploy:worker deploy:web",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "markdown",
-    "document-conversion",
-    "cloudflare-workers",
-    "ai"
+    "cloudflare",
+    "workers",
+    "ai",
+    "document",
+    "conversion",
+    "pdf",
+    "image"
   ],
-  "author": "AnyToMarkdown Contributors",
+  "author": "",
   "license": "MIT",
   "devDependencies": {
     "npm-run-all": "^4.1.5"
-  },
-  "engines": {
-    "node": ">=18"
   }
 } 

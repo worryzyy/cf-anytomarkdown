@@ -1,22 +1,29 @@
 {
-  "name": "@anytomarkdown/worker",
+  "name": "anytomarkdown-worker",
   "version": "1.0.0",
-  "description": "Cloudflare Worker for AnyToMarkdown",
+  "description": "Cloudflare Worker for AnyToMarkdown conversion service",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "wrangler dev src/index.ts",
+    "dev": "wrangler dev",
+    "build": "tsc",
     "deploy": "wrangler deploy",
-    "build": "wrangler deploy --dry-run --outdir=dist",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "type-check": "tsc --noEmit"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "AnyToMarkdown Contributors",
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "ai",
+    "markdown",
+    "conversion"
+  ],
+  "author": "",
   "license": "MIT",
+  "dependencies": {
+    "itty-router": "^4.0.13"
+  },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240312.0",
-    "typescript": "^5.0.0",
-    "vitest": "^0.34.0",
-    "wrangler": "^3.114.2"
+    "@cloudflare/workers-types": "^4.20240320.1",
+    "typescript": "^5.1.6",
+    "wrangler": "^4.4.0"
   }
 }

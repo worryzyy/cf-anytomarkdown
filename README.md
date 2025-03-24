@@ -2,13 +2,13 @@
 
 _English | [简体中文](./README.zh-CN.md)_
 
-AnyToMarkdown is a powerful online tool that quickly and accurately converts various document formats (including Word documents, PDF files, HTML pages, etc.) to Markdown format. The service is built on Cloudflare Workers, providing high-performance, low-latency file conversion experience.
+AnyToMarkdown is a powerful online tool that quickly and accurately converts various document formats (including PDF files, images, HTML pages, etc.) to Markdown format. The service is built on Cloudflare Workers AI, providing high-performance, low-latency file conversion experience.
 
 **Live Demo**: [https://cf-anytomarkdown.vercel.app/](https://cf-anytomarkdown.vercel.app/)
 
 ## Key Features
 
-- **Multi-format Support**: Convert PDF, HTML, TXT and other formats to Markdown (DOCX format is not supported)
+- **Multi-format Support**: Convert PDF, HTML, images, and other formats to Markdown
 - **File Upload**: Support drag-and-drop or file selection for conversion
 - **Format Preservation**: Maintains original document formatting including headings, lists, tables, images, etc.
 - **Real-time Preview**: Instantly preview conversion results
@@ -65,14 +65,10 @@ account_id = "your_account_id_here"  # Replace with your actual account ID
 
 ```bash
 # Example .dev.vars file
-API_KEY=your_api_key_here
 ENVIRONMENT=development
-
-# Additional examples:
-# CORS_ALLOWED_ORIGINS=http://localhost:5173,https://your-production-domain.com
-# MAX_FILE_SIZE=10485760  # 10MB in bytes
-# ENABLE_DEBUG=true
-# CUSTOM_HEADERS={"X-Custom-Header": "value"}
+CORS_ALLOWED_ORIGINS=http://localhost:5173
+MAX_FILE_SIZE=10485760  # 10MB in bytes
+ENABLE_DEBUG=true
 ```
 
 The `.dev.vars` file is used to store environment variables for local development.
@@ -151,7 +147,8 @@ To deploy the frontend to Vercel, follow these steps:
    ```
 
 4. **Configure Environment Variables**:
-   - Set the `API_BASE_URL` to your deployed Worker URL in the Vercel project settings.
+
+   - Set the `VITE_API_BASE_URL` to your deployed Worker URL in the Vercel project settings.
 
 #### Complete Deployment
 
@@ -190,14 +187,14 @@ File field name: file
 
 ```json
 {
-  "success": true,
-  "result": {
-    "name": "filename",
-    "mimeType": "text/markdown",
-    "format": "markdown",
-    "tokens": 1234,
-    "data": "# Markdown content..."
-  }
+	"success": true,
+	"result": {
+		"name": "filename",
+		"mimeType": "text/markdown",
+		"format": "markdown",
+		"tokens": 1234,
+		"data": "# Markdown content..."
+	}
 }
 ```
 
@@ -216,23 +213,23 @@ File field names: file1, file2, ...
 
 ```json
 {
-  "success": true,
-  "results": [
-    {
-      "name": "filename1",
-      "mimeType": "text/markdown",
-      "format": "markdown",
-      "tokens": 1234,
-      "data": "# Markdown content..."
-    },
-    {
-      "name": "filename2",
-      "mimeType": "text/markdown",
-      "format": "markdown",
-      "tokens": 5678,
-      "data": "# Another Markdown content..."
-    }
-  ]
+	"success": true,
+	"results": [
+		{
+			"name": "filename1",
+			"mimeType": "text/markdown",
+			"format": "markdown",
+			"tokens": 1234,
+			"data": "# Markdown content..."
+		},
+		{
+			"name": "filename2",
+			"mimeType": "text/markdown",
+			"format": "markdown",
+			"tokens": 5678,
+			"data": "# Another Markdown content..."
+		}
+	]
 }
 ```
 
@@ -248,88 +245,58 @@ GET /api/status
 
 ```json
 {
-  "success": true,
-  "status": "online",
-  "service": "anytomarkdown",
-  "version": "1.0.0"
+	"success": true,
+	"status": "online",
+	"service": "anytomarkdown",
+	"version": "1.0.0"
 }
 ```
 
 ## Technical Implementation
 
-### Frontend Implementation
-
-The frontend is built with React + TypeScript + Tailwind CSS, with key components including:
-
-- `FileUpload`: Handles file upload and drag-and-drop functionality
-- `MarkdownOutput`: Previews and downloads conversion results
-- `Notification`: Displays operation prompts and error messages
-
-### Backend Implementation
-
-The backend is based on Cloudflare Workers, utilizing Cloudflare AI's document conversion capabilities:
-
-- Supports single-file and batch file processing
-- Complete error handling and status checking
-
 ### Core Features
 
-- Document parsing and format handling
-- Image processing and embedding
-- Table and list format preservation
-- Link and reference handling
+AnyToMarkdown utilizes Cloudflare Workers AI's toMarkdown conversion functionality, supporting various document formats:
 
-## Markdown Conversion Implementation
+- **PDF Documents**: Converts PDF files to Markdown while preserving structure
+- **Images**: Uses AI to describe image content and convert to meaningful Markdown text
+- **HTML Documents**: Transforms HTML pages into clean Markdown
+- **XML Documents**: Converts XML data to Markdown format
+- **Spreadsheets**: Handles various spreadsheet formats (Excel, CSV, etc.)
 
-Our Markdown conversion process is designed to preserve the original document's structure while providing clean, well-formatted Markdown output:
+## Supported File Formats
 
-### Conversion Process
+AnyToMarkdown supports the following file formats:
 
-1. **Document Upload**: Files are uploaded through the frontend interface
-2. **Backend Processing**: Cloudflare Workers receives the file and processes it using Cloudflare AI services
-3. **Format Handling**: Various input formats (PDF, HTML, TXT) are processed differently to ensure optimal conversion
-4. **Markdown Generation**: The conversion engine transforms the content to standard Markdown syntax
-5. **Post-processing**: Special handling for formatting issues, including:
-   - Header formatting (ensuring proper spacing after # symbols)
-   - Line break preservation (adding trailing spaces for proper breaks)
-   - Table formatting with enhanced styling
-   - Code block syntax highlighting
+- PDF Documents (.pdf)
+- Images (.jpeg, .jpg, .png, .webp, .svg)
+- HTML Documents (.html)
+- XML Documents (.xml)
+- Microsoft Office Spreadsheets (.xlsx, .xlsm, .xlsb, .xls)
+- OpenDocument Spreadsheets (.ods)
+- CSV Files (.csv)
+- Apple Numbers Files (.numbers)
 
-### Frontend Rendering
+## Limitations and Known Issues
 
-The converted Markdown is rendered in the browser using:
+### File Size Limitations
 
-- **markdown-it**: Core rendering engine
-- **highlight.js**: Code syntax highlighting
-- **Custom enhancements**: Table styling, link handling, and other formatting improvements
+- **Maximum File Size**: 5MB per file
+- **AI Processing Limits**: Cloudflare Workers AI has internal processing limits that may result in errors for complex files even below the size limit
+- **Error Handling**: The application includes proper error handling for oversized files and service unavailability
 
-### Limitations
+### Beta Status
 
-- DOCX format is not currently supported
-- Maximum file size is limited by Cloudflare Workers restrictions
-- Complex formatting in PDF files may not be perfectly preserved
+**Note**: The Markdown Conversion feature in Cloudflare Workers AI is currently in **Beta stage**. This means:
 
-### Beta Stage Notice
+- The conversion quality may not be perfect in all cases
+- Complex formatting might be lost during conversion
+- Results may vary depending on the input document complexity
+- The service is subject to changes and improvements by Cloudflare
 
-Please note that the Markdown conversion feature is currently in beta stage by Cloudflare. As a result, the conversion results may not be ideal. We encourage you to stay tuned for future updates and improvements from Cloudflare's official releases.
+We recommend reviewing and possibly editing the converted Markdown for critical documents.
 
-## Troubleshooting
-
-### 1. Worker Deployment Failure
-
-Ensure you've correctly set up your Cloudflare account ID and have permissions to deploy Workers. You may need to run:
-
-```bash
-npx wrangler login
-```
-
-### 2. AI Conversion Service Unavailable
-
-Ensure your Cloudflare account has AI features enabled. You can check this in the Cloudflare Dashboard.
-
-### 3. File Size Limitations
-
-Cloudflare Workers have request size limitations. For large files, consider splitting them or using alternative services.
+### Common Errors
 
 ## Contributing
 
@@ -349,4 +316,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - **Frontend**: React, TypeScript, Tailwind CSS, Vite
 - **Backend**: Cloudflare Workers, TypeScript
-- **Conversion Engine**: Cloudflare AI
+- **Conversion Engine**: Cloudflare Workers AI
+
+---

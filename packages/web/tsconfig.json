@@ -20,19 +20,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    /* Paths */
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
-    /* Node.js Types */
-    "types": [
-      "vite/client",
-      "node"
-    ]
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src"

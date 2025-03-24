@@ -1,8 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-	readonly VITE_API_URL?: string
-	// 其他环境变量...
+	readonly VITE_API_BASE_URL: string
+	// 可以添加更多环境变量类型
 }
 
 interface ImportMeta {

@@ -3,28 +3,14 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/markdown-icon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="AnyToMarkdown - 将各种文档格式（PDF、Word、HTML等）快速转换为Markdown格式的在线工具" />
-  <meta name="keywords" content="markdown, 转换, pdf, word, html, docx, 文档转换" />
-  <title>AnyToMarkdown - 文档转Markdown转换工具</title>
-
-  <!-- 主题检测 -->
-  <script>
-    // 检查用户的主题偏好并应用
-    if (
-      localStorage.theme === 'dark' ||
-      (!('theme' in localStorage) &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  </script>
+  <title>AnyToMarkdown - 文档格式转换工具</title>
+  <meta name="description" content="使用Cloudflare Workers AI将各种文档格式（PDF、图像、HTML等）转换为Markdown格式" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 </head>
 
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+<body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

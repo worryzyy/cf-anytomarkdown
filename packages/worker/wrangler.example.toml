@@ -1,39 +1,14 @@
-# Cloudflare Workers 配置文件示例
-# 复制此文件为 wrangler.toml 并修改相关配置
-
-# 你的 Cloudflare 账户 ID
-account_id = "your_account_id_here"
-
-# Worker 名称
 name = "anytomarkdown"
-
-# 主程序入口
 main = "src/index.ts"
+compatibility_date = "2023-06-28"
 
-# 开发环境配置
-[dev]
-port = 8787
-local_protocol = "http"
+account_id = "your_account_id_here" # 替换为您的Cloudflare账户ID
 
-# 构建配置
 [build]
 command = "npm run build"
 
-# AI 绑定 - Cloudflare Workers AI服务
-[[ai]]
-binding = "AI"
+[ai]
+binding = "AI" # 绑定到Cloudflare Workers AI服务
 
-# 环境变量配置
 [vars]
-# 允许的CORS来源，用逗号分隔
-# 例如: "https://example.com,https://app.example.com"
-# 使用"*"允许所有来源（不推荐用于生产环境）
-ALLOWED_ORIGINS = "*"
-
-# 生产环境配置
-[env.production]
-vars = { ENVIRONMENT = "production" }
-
-# 开发环境配置
-[env.development]
-vars = { ENVIRONMENT = "development" }
+ENVIRONMENT = "production"
