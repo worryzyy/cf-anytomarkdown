@@ -4,7 +4,7 @@ _[English](./README.md) | 简体中文_
 
 AnyToMarkdown 是一个功能强大的在线工具，可将各种文档格式（包括 PDF 文件、图像、HTML 网页等）快速、准确地转换为 Markdown 格式。该服务基于 Cloudflare Workers AI 构建，提供高性能、低延迟的文件转换体验。
 
-**在线演示**： [即将推出](#)
+**在线演示**： [https://cf-anytomarkdown.vercel.app/](https://cf-anytomarkdown.vercel.app/)
 
 ## 主要功能
 
@@ -320,17 +320,6 @@ AnyToMarkdown 支持以下文件格式：
 - **最大文件大小**：每个文件 5MB
 - **AI 处理限制**：Cloudflare Workers AI 有内部处理限制，即使文件大小在限制范围内，复杂文件也可能导致错误
 - **错误处理**：应用程序包含对超大文件和服务不可用情况的适当错误处理
-
-### Beta 阶段说明
-
-**注意**：Cloudflare Workers AI 的 Markdown 转换功能目前处于**Beta 阶段**。这意味着：
-
-- 转换质量在某些情况下可能不完美
-- 复杂的格式可能在转换过程中丢失
-- 结果可能因输入文档的复杂性而异
-- 该服务可能会随着 Cloudflare 的更新而变化和改进
-
-对于重要文档，我们建议在转换后检查并可能编辑生成的 Markdown 内容。
 
 ### 支持的文件格式
 
