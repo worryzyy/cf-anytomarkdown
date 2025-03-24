@@ -1,0 +1,39 @@
+{
+  "common": {
+    "convertToMarkdown": "Convert to Markdown",
+    "convert": "Convert to Markdown",
+    "preview": "Preview",
+    "source": "Source",
+    "copy": "Copy",
+    "download": "Download",
+    "processing": "Processing, please wait...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close"
+  },
+  "upload": {
+    "title": "Upload Files",
+    "dragDrop": "Drag and drop files here, or",
+    "chooseFile": "Choose File",
+    "supportedFormats": "Supported formats: PDF, HTML, TXT",
+    "maxSize": "Maximum file size: 10MB",
+    "notSupported": "DOCX format is not supported"
+  },
+  "output": {
+    "title": "Conversion Results",
+    "noFilesConverted": "No files converted yet",
+    "empty": "No files converted yet",
+    "copied": "Copied to clipboard!",
+    "copyError": "Failed to copy",
+    "downloadError": "Failed to download"
+  },
+  "errors": {
+    "noFiles": "Please select files to convert",
+    "fileTooLarge": "File size exceeds limit",
+    "conversionFailed": "Conversion failed",
+    "serviceUnavailable": "Service is currently unavailable"
+  },
+  "beta": {
+    "notice": "Note: This feature is currently in beta stage by Cloudflare. Results may vary."
+  }
+}

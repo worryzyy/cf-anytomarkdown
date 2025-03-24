@@ -1,6 +1,7 @@
 import { useState, useRef, DragEvent, ChangeEvent } from 'react';
 import { convertToMarkdown } from '../api';
 import { ConversionResult } from '../types';
+import { useTranslation } from 'react-i18next';
 
 interface FileUploadProps {
   onStartLoading: () => void;
@@ -67,6 +68,7 @@ const isFileSupported = (file: File): boolean => {
 };
 
 const FileUpload = ({ onStartLoading, onEndLoading, onSuccess, onError }: FileUploadProps) => {
+  const { t } = useTranslation();
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -94,14 +96,15 @@ const FileUpload = ({ onStartLoading, onEndLoading, onSuccess, onError }: FileUp
       const supportedFiles = files.filter(isFileSupported);
       
       if (supportedFiles.length === 0) {
-        setErrorMessage('没有选择受支持的文件类型。请查看下方支持的格式列表。');
-        onError('没有选择受支持的文件类型');
+        setErrorMessage(t('errors.noSupportedFiles'));
+        onError(t('errors.noSupportedFiles'));
         return;
       }
       
       if (supportedFiles.length < files.length) {
-        setErrorMessage(`${files.length - supportedFiles.length} 个文件不受支持，已被过滤。`);
-        onError(`${files.length - supportedFiles.length} 个文件不受支持，已被过滤。`);
+        const unsupportedCount = files.length - supportedFiles.length;
+        setErrorMessage(t('errors.someFilesUnsupported', { count: unsupportedCount }));
+        onError(t('errors.someFilesUnsupported', { count: unsupportedCount }));
       }
       
       setSelectedFiles(supportedFiles);
@@ -117,14 +120,15 @@ const FileUpload = ({ onStartLoading, onEndLoading, onSuccess, onError }: FileUp
       const supportedFiles = files.filter(isFileSupported);
       
       if (supportedFiles.length === 0) {
-        setErrorMessage('没有选择受支持的文件类型。请查看下方支持的格式列表。');
-        onError('没有选择受支持的文件类型');
+        setErrorMessage(t('errors.noSupportedFiles'));
+        onError(t('errors.noSupportedFiles'));
         return;
       }
       
       if (supportedFiles.length < files.length) {
-        setErrorMessage(`${files.length - supportedFiles.length} 个文件不受支持，已被过滤。`);
-        onError(`${files.length - supportedFiles.length} 个文件不受支持，已被过滤。`);
+        const unsupportedCount = files.length - supportedFiles.length;
+        setErrorMessage(t('errors.someFilesUnsupported', { count: unsupportedCount }));
+        onError(t('errors.someFilesUnsupported', { count: unsupportedCount }));
       }
       
       setSelectedFiles(supportedFiles);
@@ -150,8 +154,8 @@ const FileUpload = ({ onStartLoading, onEndLoading, onSuccess, onError }: FileUp
   // 提交转换请求
   const handleSubmit = async () => {
     if (selectedFiles.length === 0) {
-      setErrorMessage('请选择要转换的文件');
-      onError('请选择要转换的文件');
+      setErrorMessage(t('errors.noFilesSelected'));
+      onError(t('errors.noFilesSelected'));
       return;
     }
 
@@ -164,12 +168,12 @@ const FileUpload = ({ onStartLoading, onEndLoading, onSuccess, onError }: FileUp
       if (response.success && response.results) {
         onSuccess(response.results);
       } else {
-        const errorMsg = response.error || '转换失败，请稍后重试';
+        const errorMsg = response.error || t('errors.conversionFailed');
         setErrorMessage(errorMsg);
         onError(errorMsg);
       }
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : '转换过程中出错';
+      const errorMsg = error instanceof Error ? error.message : t('errors.conversionError');
       setErrorMessage(errorMsg);
       onError(errorMsg);
       console.error(error);
@@ -201,7 +205,7 @@ const FileUpload = ({ onStartLoading, onEndLoading, onSuccess, onError }: FileUp
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              <p className="mt-2">正在处理文件，请稍候...</p>
+              <p className="mt-2">{t('common.processing')}</p>
             </>
           ) : (
             <>
@@ -219,9 +223,9 @@ const FileUpload = ({ onStartLoading, onEndLoading, onSuccess, onError }: FileUp
                   d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                 />
               </svg>
-              <p className="mt-2">拖放文件到这里，或者点击选择文件</p>
+              <p className="mt-2">{t('upload.dragDrop')}</p>
               <p className="text-sm text-gray-400 dark:text-gray-500">
-                支持 PDF、图片、HTML、电子表格（Excel、CSV）等格式
+                {t('upload.supportedFormats')}
               </p>
             </>
           )}
@@ -240,7 +244,7 @@ const FileUpload = ({ onStartLoading, onEndLoading, onSuccess, onError }: FileUp
       {/* 错误提示 */}
       {errorMessage && (
         <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg text-red-600 dark:text-red-300 text-sm">
-          <p className="font-medium">出现错误:</p>
+          <p className="font-medium">{t('common.error')}:</p>
           <p>{errorMessage}</p>
         </div>
       )}
@@ -248,7 +252,7 @@ const FileUpload = ({ onStartLoading, onEndLoading, onSuccess, onError }: FileUp
       {/* 选中的文件列表 */}
       {selectedFiles.length > 0 && (
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-          <h3 className="text-sm font-medium mb-2">已选择的文件:</h3>
+          <h3 className="text-sm font-medium mb-2">{t('upload.selectedFiles')}:</h3>
           <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
             {selectedFiles.map((file, index) => (
               <li key={index} className="flex justify-between items-center truncate">
@@ -262,7 +266,7 @@ const FileUpload = ({ onStartLoading, onEndLoading, onSuccess, onError }: FileUp
                       handleRemoveFile(index);
                     }}
                     className="ml-2 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
-                    title="移除文件"
+                    title={t('upload.removeFile')}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -294,10 +298,10 @@ const FileUpload = ({ onStartLoading, onEndLoading, onSuccess, onError }: FileUp
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              处理中...
+              {t('common.processing')}
             </>
           ) : (
-            '转换为Markdown'
+            t('common.convert')
           )}
         </button>
       </div>

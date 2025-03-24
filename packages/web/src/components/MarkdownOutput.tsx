@@ -4,6 +4,7 @@ import highlightjs from 'markdown-it-highlightjs';
 import 'highlight.js/styles/github.css';
 import hljs from 'highlight.js';
 import { ConversionResult } from '../types';
+import { useTranslation } from 'react-i18next';
 
 interface MarkdownOutputProps {
   results: ConversionResult[];
@@ -26,9 +27,11 @@ const preprocessMarkdown = (markdown: string): string => {
 };
 
 const MarkdownOutput = ({ results }: MarkdownOutputProps) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState(0);
   const [viewMode, setViewMode] = useState<'preview' | 'source'>('preview');
   const markdownRef = useRef<HTMLDivElement>(null);
+  const [copied, setCopied] = useState(false);
   
   // 创建并配置 markdown-it 实例
   const md = new MarkdownIt({
@@ -92,11 +95,11 @@ const MarkdownOutput = ({ results }: MarkdownOutputProps) => {
           link.setAttribute('rel', 'noopener noreferrer');
         });
       } catch (error) {
-        console.error('Markdown 渲染错误:', error);
-        markdownRef.current.innerHTML = '<div class="text-red-500">Markdown 渲染失败</div>';
+        console.error('Markdown rendering error:', error);
+        markdownRef.current.innerHTML = `<div class="text-red-500">${t('errors.renderingFailed')}</div>`;
       }
     }
-  }, [activeTab, viewMode, results, md]);
+  }, [activeTab, viewMode, results, md, t]);
 
   // 选择活动标签
   const handleTabClick = (index: number) => {
@@ -104,15 +107,9 @@ const MarkdownOutput = ({ results }: MarkdownOutputProps) => {
   };
 
   // 复制 Markdown 内容
-  const handleCopyClick = () => {
+  const handleCopyClick = async () => {
     if (results[activeTab]) {
-      navigator.clipboard.writeText(results[activeTab].data)
-        .then(() => {
-          alert('已复制到剪贴板!');
-        })
-        .catch((err) => {
-          console.error('复制失败:', err);
-        });
+      await copyToClipboard(results[activeTab].data);
     }
   };
 
@@ -131,8 +128,22 @@ const MarkdownOutput = ({ results }: MarkdownOutputProps) => {
     }
   };
 
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
+
   if (results.length === 0) {
-    return null;
+    return (
+      <div className="text-center text-gray-500 dark:text-gray-400">
+        {t('output.noFilesConverted')}
+      </div>
+    );
   }
 
   return (
@@ -171,7 +182,7 @@ const MarkdownOutput = ({ results }: MarkdownOutputProps) => {
             `}
             onClick={() => setViewMode('preview')}
           >
-            预览
+            {t('common.preview')}
           </button>
           <button
             className={`
@@ -182,7 +193,7 @@ const MarkdownOutput = ({ results }: MarkdownOutputProps) => {
             `}
             onClick={() => setViewMode('source')}
           >
-            源代码
+            {t('common.source')}
           </button>
         </div>
 
@@ -191,19 +202,19 @@ const MarkdownOutput = ({ results }: MarkdownOutputProps) => {
             className="px-3 py-1 text-xs bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"
             onClick={handleCopyClick}
           >
-            复制
+            {copied ? t('output.copied') : t('output.copy')}
           </button>
           <button
             className="px-3 py-1 text-xs bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"
             onClick={handleDownloadClick}
           >
-            下载
+            {t('output.download')}
           </button>
         </div>
       </div>
 
       {/* Markdown 内容 */}
-      <div className="markdown-output overflow-auto max-h-96">
+      <div className="markdown-output overflow-auto max-h-[50vh]">
         {viewMode === 'preview' ? (
           <div
             ref={markdownRef}

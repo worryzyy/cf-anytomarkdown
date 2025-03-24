@@ -1,0 +1,58 @@
+{
+  "common": {
+    "convertToMarkdown": "转换为 Markdown",
+    "convert": "转换为 Markdown",
+    "preview": "预览",
+    "source": "源代码",
+    "copy": "复制",
+    "download": "下载",
+    "processing": "正在处理，请稍候...",
+    "error": "出现错误",
+    "success": "成功"
+  },
+  "upload": {
+    "title": "上传文件",
+    "clickToUpload": "点击上传或拖拽文件",
+    "dragDrop": "拖放文件到这里，或者点击选择文件",
+    "chooseFile": "选择文件",
+    "supportedFormats": "支持的格式：PDF、图片、HTML、电子表格（Excel、CSV）等",
+    "maxFileSize": "最大文件大小：10MB",
+    "selectedFiles": "已选择的文件",
+    "removeFile": "移除文件",
+    "notSupported": "不支持 DOCX 格式"
+  },
+  "output": {
+    "title": "转换结果",
+    "noFilesConverted": "尚未转换任何文件",
+    "copy": "复制",
+    "copied": "已复制！",
+    "download": "下载",
+    "preview": "预览",
+    "source": "源代码",
+    "empty": "尚未转换任何文件",
+    "copyError": "复制失败",
+    "downloadError": "下载失败"
+  },
+  "errors": {
+    "fileTooLarge": "文件太大。最大大小为 10MB",
+    "conversionFailed": "转换失败，请稍后重试",
+    "conversionError": "转换过程中出错",
+    "unsupportedFormat": "不支持的文件格式",
+    "noSupportedFiles": "没有选择受支持的文件类型。请查看下方支持的格式列表。",
+    "someFilesUnsupported": "{{count}} 个文件不受支持，已被过滤。",
+    "noFilesSelected": "请选择要转换的文件",
+    "renderingFailed": "Markdown 渲染失败",
+    "noFiles": "请选择要转换的文件",
+    "serviceUnavailable": "服务当前不可用"
+  },
+  "notifications": {
+    "conversionSuccess": "成功转换 {{count}} 个文件"
+  },
+  "beta": {
+    "notice": "注意：此功能目前是 Cloudflare 的 beta 阶段功能。转换效果可能不够理想。"
+  },
+  "footer": {
+    "basedOn": "基于 Cloudflare Workers AI",
+    "learnMore": "了解更多"
+  }
+}
