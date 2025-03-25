@@ -154,44 +154,46 @@ function App() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* 头部区域 */}
       <header className="bg-white shadow-md">
-        <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800">AnyToMarkdown</h1>
-            <p className="mt-2 text-gray-600">
-              将各种文档格式（PDF、图像、HTML等）转换为Markdown格式
-            </p>
-          </div>
-          <div className="flex space-x-3">
-            {serviceAvailable !== null && (
-              <div className={`flex items-center px-3 py-1 rounded-full text-xs font-medium ${serviceAvailable
-                ? 'bg-green-100 text-green-800'
-                : 'bg-red-100 text-red-800'
-                }`}>
-                <span className={`h-2 w-2 rounded-full mr-1.5 ${serviceAvailable ? 'bg-green-500' : 'bg-red-500'
-                  }`}></span>
-                {serviceAvailable ? '服务在线' : '服务离线'}
-              </div>
-            )}
-            {batchResults && (
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center">
+            <div className="mb-4 md:mb-0">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-800">AnyToMarkdown</h1>
+              <p className="mt-2 text-sm md:text-base text-gray-600">
+                将各种文档格式（PDF、图像、HTML等）转换为Markdown格式
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {serviceAvailable !== null && (
+                <div className={`flex items-center px-3 py-1 rounded-full text-xs font-medium ${serviceAvailable
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-red-100 text-red-800'
+                  }`}>
+                  <span className={`h-2 w-2 rounded-full mr-1.5 ${serviceAvailable ? 'bg-green-500' : 'bg-red-500'
+                    }`}></span>
+                  {serviceAvailable ? '服务在线' : '服务离线'}
+                </div>
+              )}
+              {batchResults && (
+                <button
+                  onClick={toggleBatchMode}
+                  className="px-3 py-1.5 md:px-4 md:py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors flex items-center text-xs md:text-sm"
+                >
+                  <svg className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                  </svg>
+                  {showBatchMode ? "查看当前文件" : "查看批量结果"}
+                </button>
+              )}
               <button
-                onClick={toggleBatchMode}
-                className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors flex items-center"
+                onClick={() => setShowHelp(true)}
+                className="px-3 py-1.5 md:px-4 md:py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors flex items-center text-xs md:text-sm"
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                <svg className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
                 </svg>
-                {showBatchMode ? "查看当前文件" : "查看批量结果"}
+                使用指南
               </button>
-            )}
-            <button
-              onClick={() => setShowHelp(true)}
-              className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors flex items-center"
-            >
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-              </svg>
-              使用指南
-            </button>
+            </div>
           </div>
         </div>
       </header>
